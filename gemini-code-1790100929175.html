@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С 6 месяцами нашей любви, мое солнце! ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tone.js for audio generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe5ec 50%, #fde2e4 100%);
+            color: #4a4a4a;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-caveat {
+            font-family: 'Caveat', cursive;
+        }
+        @keyframes float {
+            0% { transform: translateY(0vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        .floating-heart {
+            position: fixed;
+            bottom: -10vh;
+            font-size: 20px;
+            color: rgba(255, 105, 135, 0.6);
+            animation: float linear infinite;
+            z-index: 0;
+            user-select: none;
+            pointer-events: none;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.25);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fff0f3;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ffb3c1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff8fab;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col justify-between selection:bg-pink-200 selection:text-pink-900">
+
+    <div id="hearts-container"></div>
+
+    <header class="w-full py-5 px-6 md:px-12 flex justify-between items-center z-20 glass-card sticky top-0 backdrop-blur-md">
+        <div class="flex items-center space-x-2">
+            <span class="text-2xl text-pink-500 animate-pulse">❤️</span>
+            <span class="font-playfair text-xl font-semibold text-pink-900 tracking-wide">Для любимой</span>
+        </div>
+        <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-pink-900">
+            <a href="#counter-section" class="hover:text-pink-500 transition">Таймер</a>
+            <a href="#moments-section" class="hover:text-pink-500 transition">Воспоминания</a>
+            <a href="#reasons-section" class="hover:text-pink-500 transition">О тебе</a>
+            <a href="#letter-section" class="hover:text-pink-500 transition">Письмо</a>
+        </nav>
+        <div class="flex items-center space-x-3">
+            <button id="music-btn" onclick="toggleMusic()" class="bg-pink-100 hover:bg-pink-200 text-pink-700 px-4 py-2 rounded-full text-sm font-medium transition flex items-center space-x-2 shadow-sm cursor-pointer">
+                <i id="music-icon" class="fa-solid fa-music"></i>
+                <span id="music-text">Музыка</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-center px-4 py-12 z-10 max-w-5xl mx-auto w-full">
+        <div class="text-center mb-12">
+            <div class="inline-block mb-4 px-4 py-1.5 rounded-full bg-pink-100 text-pink-700 font-medium text-sm tracking-wider uppercase animate-bounce">
+                🎉 С годовщиной 6 месяцев, моё солнце!
+            </div>
+            <h1 class="font-playfair text-4xl md:text-6xl font-bold text-pink-900 mb-4 leading-tight">
+                25 марта 2026 года в 02:30
+            </h1>
+            <p class="text-lg md:text-xl text-pink-800/80 max-w-xl mx-auto font-light">
+                Момент, когда в моей жизни появилось моё самое главное солнце — моя любимая.
+            </p>
+        </div>
+
+        <div id="counter-section" class="glass-card rounded-3xl p-6 md:p-10 w-full mb-16 text-center shadow-xl">
+            <h3 class="font-playfair text-2xl text-pink-900 mb-6 font-semibold">Мы вместе уже:</h3>
+            <div id="counter" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-pink-100">
+                    <span id="months" class="block font-playfair text-3xl md:text-5xl font-bold text-pink-600 mb-1">0</span>
+                    <span class="text-xs md:text-sm text-pink-900/70 uppercase tracking-wider font-medium">Месяцев</span>
+                </div>
+                <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-pink-100">
+                    <span id="days" class="block font-playfair text-3xl md:text-5xl font-bold text-pink-600 mb-1">0</span>
+                    <span class="text-xs md:text-sm text-pink-900/70 uppercase tracking-wider font-medium">Дней</span>
+                </div>
+                <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-pink-100">
+                    <span id="hours" class="block font-playfair text-3xl md:text-5xl font-bold text-pink-600 mb-1">0</span>
+                    <span class="text-xs md:text-sm text-pink-900/70 uppercase tracking-wider font-medium">Часов</span>
+                </div>
+                <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-pink-100">
+                    <span id="seconds" class="block font-playfair text-3xl md:text-5xl font-bold text-pink-600 mb-1">0</span>
+                    <span class="text-xs md:text-sm text-pink-900/70 uppercase tracking-wider font-medium">Секунд</span>
+                </div>
+            </div>
+            <p id="exact-time" class="mt-6 text-sm text-pink-700/80 font-medium"></p>
+        </div>
+
+        <!-- Раздел с нашими особенными моментами -->
+        <section id="moments-section" class="w-full mb-16">
+            <div class="text-center mb-10">
+                <span class="text-pink-500 text-3xl">✨</span>
+                <h2 class="font-playfair text-3xl md:text-4xl font-bold text-pink-900 mt-2">Особенные моменты</h2>
+                <p class="text-pink-800/80 text-sm mt-1">Главные главы нашей сказки, моя любимая</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-card rounded-2xl p-6 shadow-lg flex items-start space-x-4">
+                    <div class="p-3 bg-pink-100 text-pink-600 rounded-xl text-2xl"><i class="fa-solid fa-clock"></i></div>
+                    <div>
+                        <h4 class="font-playfair font-semibold text-pink-900 text-lg">Та самая ночь</h4>
+                        <p class="text-sm text-pink-800/80 mt-1">25 марта, 02:30 — момент, когда моё солнце озарило мою жизнь и мы начали нашу историю.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 shadow-lg flex items-start space-x-4">
+                    <div class="p-3 bg-pink-100 text-pink-600 rounded-xl text-2xl"><i class="fa-solid fa-mug-hot"></i></div>
+                    <div>
+                        <h4 class="font-playfair font-semibold text-pink-900 text-lg">Наши уютные вечера</h4>
+                        <p class="text-sm text-pink-800/80 mt-1">Бесконечные разговоры с любимой обо всем на свете, теплые объятия и абсолютное счастье.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 shadow-lg flex items-start space-x-4">
+                    <div class="p-3 bg-pink-100 text-pink-600 rounded-xl text-2xl"><i class="fa-solid fa-face-smile-beam"></i></div>
+                    <div>
+                        <h4 class="font-playfair font-semibold text-pink-900 text-lg">Твой лучезарный смех</h4>
+                        <p class="text-sm text-pink-800/80 mt-1">Самый лучший звук на свете. Твоя улыбка разгоняет любые тучи, мое любимое солнышко.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 shadow-lg flex items-start space-x-4">
+                    <div class="p-3 bg-pink-100 text-pink-600 rounded-xl text-2xl"><i class="fa-solid fa-compass"></i></div>
+                    <div>
+                        <h4 class="font-playfair font-semibold text-pink-900 text-lg">Планы на будущее</h4>
+                        <p class="text-sm text-pink-800/80 mt-1">Впереди нас ждет вечность, полная путешествий, радости и совместных ярких моментов.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Карточки: Почему я тебя люблю -->
+        <section id="reasons-section" class="w-full mb-16">
+            <h2 class="font-playfair text-3xl font-bold text-center text-pink-900 mb-2">Почему я люблю тебя, моё солнце</h2>
+            <p class="text-center text-pink-800/70 mb-8 max-w-md mx-auto text-sm">Нажми на карточку, чтобы узнать причину</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="flipCard(this)" class="glass-card rounded-2xl p-6 h-48 cursor-pointer flex flex-col items-center justify-center text-center transition transform hover:-translate-y-2 relative shadow-md">
+                    <div class="front w-full flex flex-col items-center">
+                        <span class="text-3xl mb-3 text-pink-500">✨</span>
+                        <h3 class="font-playfair text-lg font-semibold text-pink-900">Твоя улыбка</h3>
+                        <p class="text-xs text-pink-700/60 mt-2">(нажми)</p>
+                    </div>
+                    <div class="back absolute inset-0 p-6 bg-pink-500 text-white rounded-2xl flex items-center justify-center text-center opacity-0 transition-opacity duration-300 pointer-events-none">
+                        <p class="text-sm font-medium font-caveat text-xl">Твоя улыбка согревает меня лучше любого солнца и заставляет сердце биться чаще, любимая.</p>
+                    </div>
+                </div>
+
+                <div onclick="flipCard(this)" class="glass-card rounded-2xl p-6 h-48 cursor-pointer flex flex-col items-center justify-center text-center transition transform hover:-translate-y-2 relative shadow-md">
+                    <div class="front w-full flex flex-col items-center">
+                        <span class="text-3xl mb-3 text-pink-500">🥺</span>
+                        <h3 class="font-playfair text-lg font-semibold text-pink-900">Твоя доброта</h3>
+                        <p class="text-xs text-pink-700/60 mt-2">(нажми)</p>
+                    </div>
+                    <div class="back absolute inset-0 p-6 bg-pink-500 text-white rounded-2xl flex items-center justify-center text-center opacity-0 transition-opacity duration-300 pointer-events-none">
+                        <p class="text-sm font-medium font-caveat text-xl">Твое золотое сердце и забота делают этот мир невероятно прекрасным.</p>
+                    </div>
+                </div>
+
+                <div onclick="flipCard(this)" class="glass-card rounded-2xl p-6 h-48 cursor-pointer flex flex-col items-center justify-center text-center transition transform hover:-translate-y-2 relative shadow-md">
+                    <div class="front w-full flex flex-col items-center">
+                        <span class="text-3xl mb-3 text-pink-500">💖</span>
+                        <h3 class="font-playfair text-lg font-semibold text-pink-900">Наши разговоры</h3>
+                        <p class="text-xs text-pink-700/60 mt-2">(нажми)</p>
+                    </div>
+                    <div class="back absolute inset-0 p-6 bg-pink-500 text-white rounded-2xl flex items-center justify-center text-center opacity-0 transition-opacity duration-300 pointer-events-none">
+                        <p class="text-sm font-medium font-caveat text-xl">С тобой можно говорить обо всем на свете часами, моё любимое солнышко.</p>
+                    </div>
+                </div>
+
+                <div onclick="flipCard(this)" class="glass-card rounded-2xl p-6 h-48 cursor-pointer flex flex-col items-center justify-center text-center transition transform hover:-translate-y-2 relative shadow-md">
+                    <div class="front w-full flex flex-col items-center">
+                        <span class="text-3xl mb-3 text-pink-500">🧸</span>
+                        <h3 class="font-playfair text-lg font-semibold text-pink-900">Уютные объятия</h3>
+                        <p class="text-xs text-pink-700/60 mt-2">(нажми)</p>
+                    </div>
+                    <div class="back absolute inset-0 p-6 bg-pink-500 text-white rounded-2xl flex items-center justify-center text-center opacity-0 transition-opacity duration-300 pointer-events-none">
+                        <p class="text-sm font-medium font-caveat text-xl">В твоих объятиях я чувствую себя дома, в абсолютном спокойствии и тепле.</p>
+                    </div>
+                </div>
+
+                <div onclick="flipCard(this)" class="glass-card rounded-2xl p-6 h-48 cursor-pointer flex flex-col items-center justify-center text-center transition transform hover:-translate-y-2 relative shadow-md">
+                    <div class="front w-full flex flex-col items-center">
+                        <span class="text-3xl mb-3 text-pink-500">✨</span>
+                        <h3 class="font-playfair text-lg font-semibold text-pink-900">Понимание с полуслова</h3>
+                        <p class="text-xs text-pink-700/60 mt-2">(нажми)</p>
+                    </div>
+                    <div class="back absolute inset-0 p-6 bg-pink-500 text-white rounded-2xl flex items-center justify-center text-center opacity-0 transition-opacity duration-300 pointer-events-none">
+                        <p class="text-sm font-medium font-caveat text-xl">Нам даже не нужно говорить, чтобы понять друг друга. У нас особенная связь, любимая.</p>
+                    </div>
+                </div>
+
+                <div onclick="flipCard(this)" class="glass-card rounded-2xl p-6 h-48 cursor-pointer flex flex-col items-center justify-center text-center transition transform hover:-translate-y-2 relative shadow-md">
+                    <div class="front w-full flex flex-col items-center">
+                        <span class="text-3xl mb-3 text-pink-500">🌹</span>
+                        <h3 class="font-playfair text-lg font-semibold text-pink-900">Просто за то, что ты есть</h3>
+                        <p class="text-xs text-pink-700/60 mt-2">(нажми)</p>
+                    </div>
+                    <div class="back absolute inset-0 p-6 bg-pink-500 text-white rounded-2xl flex items-center justify-center text-center opacity-0 transition-opacity duration-300 pointer-events-none">
+                        <p class="text-sm font-medium font-caveat text-xl">Ты — моё солнце и самое прекрасное чудо в моей жизни. Спасибо, что ты моя.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Письмо -->
+        <section id="letter-section" class="w-full text-center glass-card rounded-3xl p-8 md:p-12 mb-12 shadow-xl">
+            <div class="inline-block p-4 bg-pink-100 rounded-full text-pink-600 text-2xl mb-4 animate-bounce">
+                💌
+            </div>
+            <h2 class="font-playfair text-3xl font-bold text-pink-900 mb-4">Письмо для любимой</h2>
+            <p class="text-pink-800/80 max-w-lg mx-auto mb-6 text-sm md:text-base">
+                Я написал кое-что особенное для тебя на эту годовщину. Нажми кнопку ниже, чтобы прочесть моё послание.
+            </p>
+            <button onclick="openModal()" class="bg-gradient-to-r from-pink-500 to-rose-400 hover:from-pink-600 hover:to-rose-500 text-white font-medium px-8 py-3.5 rounded-full shadow-lg hover:shadow-pink-300/50 transition transform hover:-scale-105 active:scale-95 cursor-pointer">
+                Открыть письмо ❤️
+            </button>
+        </section>
+    </main>
+
+    <!-- Модальное окно письма -->
+    <div id="letter-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card rounded-3xl p-6 md:p-10 max-w-lg w-full relative bg-white/95 shadow-2xl transform scale-95 transition-transform duration-300" id="modal-content">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 w-8 h-8 rounded-full flex items-center justify-center bg-pink-50 cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="text-center mb-6">
+                <span class="text-3xl">🌸</span>
+                <h3 class="font-playfair text-2xl font-bold text-pink-900 mt-2">Моё любимое солнце!</h3>
+            </div>
+            <div class="font-caveat text-2xl md:text-3xl text-pink-900 leading-relaxed max-h-[60vh] overflow-y-auto px-2">
+                <p class="mb-4">Сегодня ровно 6 месяцев с того момента, как началась наша история. 25 марта 2026 года в 2:30 ночи изменило мою жизнь навсегда.</p>
+                <p class="mb-4">Каждый день с тобой, моё солнышко — это подарок. Твоя улыбка, твой смех, твоя поддержка и тепло делают меня самым счастливым человеком на свете.</p>
+                <p class="mb-4">Спасибо тебе за твою любовь, за каждый совместный момент и за то, что ты просто есть. Я безумно тебя люблю, моя любимая, и с нетерпением жду все наши будущие главы вместе!</p>
+                <p class="text-right font-bold mt-6">Твой самый любящий тебя человек ❤️</p>
+            </div>
+            <div class="mt-6 text-center">
+                <button onclick="closeModal()" class="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2.5 rounded-full text-sm font-medium transition shadow-md cursor-pointer">
+                    Закрыть с улыбкой 😊
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-6 text-xs text-pink-800/60 z-10">
+        <p>Создано с бесконечной любовью для любимой ✨ 25.03.2026 — Навсегда</p>
+    </footer>
+
+    <script>
+        const startDate = new Date(2026, 2, 25, 2, 30, 0);
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            if (diff < 0) {
+                document.getElementById('counter').innerHTML = '<div class="col-span-4 text-lg text-pink-900">Скоро начнем!</div>';
+                return;
+            }
+
+            const secondsTotal = Math.floor(diff / 1000);
+            const seconds = secondsTotal % 60;
+            const minutesTotal = Math.floor(secondsTotal / 60);
+            const minutes = minutesTotal % 60;
+            const hoursTotal = Math.floor(minutesTotal / 60);
+            const hours = hoursTotal % 24;
+            const daysTotal = Math.floor(hoursTotal / 24);
+
+            let months = (now.getFullYear() - startDate.getFullYear()) * 12 + (now.getMonth() - startDate.getMonth());
+            if (now.getDate() < startDate.getDate()) {
+                months--;
+            }
+            if (months < 0) months = 0;
+
+            document.getElementById('months').innerText = months;
+            document.getElementById('days').innerText = daysTotal;
+            document.getElementById('hours').innerText = hours;
+            document.getElementById('seconds').innerText = seconds;
+
+            document.getElementById('exact-time').innerText = `Это ${daysTotal} дней, ${hours} часов и ${minutes} минут чистой любви ❤️`;
+        }
+
+        setInterval(updateCounter, 1000);
+        updateCounter();
+
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            
+            const symbols = ['❤️', '💖', '✨', '🌸', '💕', '💗'];
+            heart.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 16 + 12) + 'px';
+            
+            const duration = Math.random() * 6 + 4;
+            heart.style.animationDuration = duration + 's';
+            
+            container.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createHeart, 400);
+
+        function flipCard(card) {
+            const front = card.querySelector('.front');
+            const back = card.querySelector('.back');
+            
+            if (back.style.opacity === '1') {
+                back.style.opacity = '0';
+                back.style.pointerEvents = 'none';
+                front.style.opacity = '1';
+            } else {
+                back.style.opacity = '1';
+                back.style.pointerEvents = 'auto';
+                front.style.opacity = '0';
+            }
+        }
+
+        function openModal() {
+            const modal = document.getElementById('letter-modal');
+            const content = document.getElementById('modal-content');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('letter-modal');
+            const content = document.getElementById('modal-content');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+        }
+
+        let isPlaying = false;
+        let synth, loop;
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            const text = document.getElementById('music-text');
+
+            if (!isPlaying) {
+                Tone.start();
+                synth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: "sine" },
+                    envelope: { attack: 2, decay: 1, sustain: 0.8, release: 3 }
+                }).toDestination();
+                synth.volume.value = -12;
+
+                const chords = [
+                    ["C4", "E4", "G4", "B4"],
+                    ["A3", "C4", "E4", "G4"],
+                    ["F3", "A3", "C4", "E4"],
+                    ["G3", "B3", "D4", "F4"]
+                ];
+
+                let index = 0;
+                loop = new Tone.Loop(time => {
+                    synth.triggerAttackRelease(chords[index], "2m", time);
+                    index = (index + 1) % chords.length;
+                }, "2m").start(0);
+
+                Tone.Transport.start();
+                isPlaying = true;
+                icon.className = "fa-solid fa-volume-high";
+                text.innerText = "Музыка";
+            } else {
+                if (loop) loop.stop();
+                if (synth) synth.dispose();
+                Tone.Transport.stop();
+                isPlaying = false;
+                icon.className = "fa-solid fa-music";
+                text.innerText = "Музыка";
+            }
+        }
+    </script>
+</body>
+</html>
